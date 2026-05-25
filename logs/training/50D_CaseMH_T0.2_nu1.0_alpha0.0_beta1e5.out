@@ -1,0 +1,743 @@
+
+============================================================
+DeepSJRP - Stochastic Joint Replenishment Problem Solver
+============================================================
+Instance: 50D_CaseMH
+Options: Dict{Symbol, Any}(:beta_override => 100000.0, :alpha_override => nothing, :device => :gpu, :nu_override => 1.0, :T_override => 0.2, :seed => 777)
+============================================================
+
+Device: CUDA GPU
+CUDA toolchain: 
+- runtime 12.8, local installation
+- driver 580.126.16 for 13.2
+- compiler 12.9
+
+CUDA libraries: 
+- CUBLAS: 12.8.4
+- CURAND: 10.3.9
+- CUFFT: 11.3.3
+- CUSOLVER: 11.7.3
+- CUSPARSE: 12.5.8
+- CUPTI: 2025.1.1 (API 12.8.0)
+- NVML: 13.0.0+580.126.16
+
+Julia packages: 
+- CUDA: 5.11.0
+- GPUArrays: 11.4.1
+- GPUCompiler: 1.9.1
+- KernelAbstractions: 0.9.41
+- CUDA_Driver_jll: 13.2.0+0
+- CUDA_Compiler_jll: 0.4.2+0
+- CUDA_Runtime_jll: 0.21.0+0
+- CUDA_Runtime_Discovery: 1.0.0
+
+Toolchain:
+- Julia: 1.11.7
+- LLVM: 16.0.6
+
+Preferences:
+- CUDA_Runtime_jll.version: local
+
+1 device:
+  0: NVIDIA H100 80GB HBM3 (sm_90, 79.175 GiB / 79.647 GiB available)
+BLAS threads: 1
+Julia threads: 10
+
+Benchmark source: QS
+
+============================================================
+IMPULSE CONTROL PROBLEM (scaled, annual)
+============================================================
+Instance: 50D_CaseMH
+Dimension: 50
+Interest rate: 0.05
+Cost scaling κ: 0.01
+
+Drift μ (annual demand rates): [50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5]
+Covariance Σ diagonal: [625.0, 625.0, 625.0, 625.0, 625.0, 625.0, 625.0, 625.0, 625.0, 625.0, 625.0, 625.0, 625.0, 625.0, 625.0, 156.25, 156.25, 156.25, 156.25, 156.25, 156.25, 156.25, 156.25, 156.25, 156.25, 156.25, 156.25, 156.25, 156.25, 156.25, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625, 39.0625]
+
+Scaled costs (× κ = 0.01):
+  Fixed cost K:    2.5
+  Variable costs c: [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004, 0.004]
+  Holding costs h:  [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04]
+  Penalty costs p:  [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+
+Original costs (unscaled):
+  Fixed cost K:    250.0
+  Variable costs c: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]
+  Holding costs h:  [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0]
+  Penalty costs p:  [25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 25.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0]
+============================================================
+
+============================================================
+TRAINING HYPERPARAMETERS
+============================================================
+Benchmark source: QS
+Precision:        Float32
+Batch size:       5000
+Num intervals:    100
+T horizon:        0.2
+Num iterations:   40000
+Learning rates:   [0.001, 0.0002, 0.0001, 1.0e-5, 1.0e-6]
+LR steps:         [1, 5000, 10000, 20000, 30000]
+Beta penalty:     [1.0, 10.0, 100.0, 1000.0, 10000.0, 100000.0]
+Penalty steps:    [1, 2500, 5000, 7500, 10000, 20000]
+Lambda rate:      3.345389141085892
+S guess:          [[31.0, 32.0, 31.0, 31.0, 31.0, 31.0, 32.0, 32.0, 31.0, 32.0, 31.0, 32.0, 31.0, 32.0, 32.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0]]
+Nu radius:        1.0
+S distribution:   lognormal
+Alpha factor:     0.2
+Alpha js:         [2.989188874079404, 2.989188874079404, 2.989188874079404, 2.989188874079404, 2.989188874079404, 2.989188874079404, 2.989188874079404, 2.989188874079404, 2.989188874079404, 2.989188874079404, 2.989188874079404, 2.989188874079404, 2.989188874079404, 2.989188874079404, 2.989188874079404, 1.494594437039702, 1.494594437039702, 1.494594437039702, 1.494594437039702, 1.494594437039702, 1.494594437039702, 1.494594437039702, 1.494594437039702, 1.494594437039702, 1.494594437039702, 1.494594437039702, 1.494594437039702, 1.494594437039702, 1.494594437039702, 1.494594437039702, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851, 0.747297218519851]
+Cost scaling:     0.01
+
+Neural network architecture:
+  Hidden layers:  4
+  Width:          1000
+  Activation:     elu
+
+Optimization parameters:
+  Start factor:   1.0
+  Lower factor:   0.5
+  Upper factor:   1.5
+  Sim runs:       10
+  Sim horizon:    5000
+  Epsilons:       [-1.25, -2.5, -5.0, -7.5, -10.0, -12.5, -15.0, -20.0, -25.0, -30.0, -40.0, -50.0, -75.0, -100.0]
+============================================================
+
+Gradient network G (∇V):
+Chain(
+  Dense(50 => 1000, elu),               # 51_000 parameters
+  Dense(1000 => 1000, elu),             # 1_001_000 parameters
+  Dense(1000 => 1000, elu),             # 1_001_000 parameters
+  Dense(1000 => 1000, elu),             # 1_001_000 parameters
+  Dense(1000 => 50),                    # 50_050 parameters
+)                   # Total: 10 arrays, 3_104_050 parameters, 1.562 KiB.
+
+Value network H (V):
+Chain(
+  Dense(50 => 1000, elu),               # 51_000 parameters
+  Dense(1000 => 1000, elu),             # 1_001_000 parameters
+  Dense(1000 => 1000, elu),             # 1_001_000 parameters
+  Dense(1000 => 1000, elu),             # 1_001_000 parameters
+  Dense(1000 => 1),                     # 1_001 parameters
+)                   # Total: 10 arrays, 3_055_001 parameters, 1.562 KiB.
+
+
+============================================================
+Starting neural network training...
+============================================================
+
+Starting training with steady-state sampler:
+-----------------------------------------
+Epoch: 1; Penalty β updated to: 1.0
+-----------------------------------------
+─── Device check ───
+  x_tn: CuArray{Float32} (50, 100, 5000)
+  dB: CuArray{Float32} (50, 100, 5000)
+  dU: CuArray{Float32} (50, 100, 5000)
+  exponentials: CuArray{Float32} (1, 100)
+  loss_dB: CuArray{Float32} (1, 5000)
+  loss_df: CuArray{Float32} (1, 5000)
+  loss_dU: CuArray{Float32} (1, 5000)
+  H_x0: CuArray{Float32} (1, 5000)
+  H_xT: CuArray{Float32} (1, 5000)
+  penalties: CuArray{Float32} (1, 5000)
+────────────────────
+Epoch: 1; Computation time: 55.266275753; Current value of V(0): 0.0
+Lagrangian objective: 712768.0; Average H(x0): 0.0; Quantile-hedge α(β): 50.519999999999996
+Simulation time per epoch: 10.284171741; Gradient computation time: 34.214889898; Testing time: 10.095323199
+Epoch: 1000; Computation time: 392.860503218; Current value of V(0): 5033.49723815918
+Lagrangian objective: -3486.4167; Average H(x0): 6314.4727; Quantile-hedge α(β): 1.3599999999999945
+Simulation time per epoch: 0.074216234; Gradient computation time: 0.180266566; Testing time: 0.082851807
+Epoch: 2000; Computation time: 730.451796075; Current value of V(0): 8966.07894897461
+Lagrangian objective: -3673.1045; Average H(x0): 6289.5146; Quantile-hedge α(β): 0.880000000000003
+Simulation time per epoch: 0.074331458; Gradient computation time: 0.180456547; Testing time: 0.082883411
+-----------------------------------------
+Epoch: 2500; Penalty β updated to: 10.0
+-----------------------------------------
+Epoch: 3000; Computation time: 1068.563850547; Current value of V(0): 9319.889068603516
+Lagrangian objective: -1259.264; Average H(x0): 1615.779; Quantile-hedge α(β): 14.500000000000002
+Simulation time per epoch: 0.07429721; Gradient computation time: 0.180904191; Testing time: 0.083018126
+Epoch: 4000; Computation time: 1406.900798203; Current value of V(0): 10023.420715332031
+Lagrangian objective: -1274.5575; Average H(x0): 1604.5886; Quantile-hedge α(β): 14.339999999999996
+Simulation time per epoch: 0.073751804; Gradient computation time: 0.181200492; Testing time: 0.083120405
+-----------------------------------------
+Epoch: 5000; Penalty β updated to: 100.0
+-----------------------------------------
+Epoch: 5000; Computation time: 1745.785575172; Current value of V(0): 10518.053436279297
+Lagrangian objective: 1815.4148; Average H(x0): 1615.9733; Quantile-hedge α(β): 13.439999999999996
+Simulation time per epoch: 0.074080966; Gradient computation time: 0.181215459; Testing time: 0.083238736
+Epoch: 6000; Computation time: 2084.979085225; Current value of V(0): 7172.6348876953125
+Lagrangian objective: -896.8811; Average H(x0): 989.1808; Quantile-hedge α(β): 59.699999999999996
+Simulation time per epoch: 0.07412447; Gradient computation time: 0.181288897; Testing time: 0.083295107
+Epoch: 7000; Computation time: 2423.957899234; Current value of V(0): 7273.372650146484
+Lagrangian objective: -897.7721; Average H(x0): 990.0724; Quantile-hedge α(β): 59.64
+Simulation time per epoch: 0.074024405; Gradient computation time: 0.182100896; Testing time: 0.083378943
+-----------------------------------------
+Epoch: 7500; Penalty β updated to: 1000.0
+-----------------------------------------
+Epoch: 8000; Computation time: 2763.29957735; Current value of V(0): 5257.069778442383
+Lagrangian objective: -740.96265; Average H(x0): 789.8413; Quantile-hedge α(β): 92.16
+Simulation time per epoch: 0.074079901; Gradient computation time: 0.181923583; Testing time: 0.083373766
+Epoch: 9000; Computation time: 3102.57048648; Current value of V(0): 5871.612548828125
+Lagrangian objective: -736.2087; Average H(x0): 796.9333; Quantile-hedge α(β): 90.92
+Simulation time per epoch: 0.074062069; Gradient computation time: 0.181721573; Testing time: 0.083380152
+-----------------------------------------
+Epoch: 10000; Penalty β updated to: 10000.0
+-----------------------------------------
+Epoch: 10000; Computation time: 3441.806867719; Current value of V(0): 6112.229156494141
+Lagrangian objective: -317.2528; Average H(x0): 794.2505; Quantile-hedge α(β): 91.5
+Simulation time per epoch: 0.073999416; Gradient computation time: 0.181667555; Testing time: 0.083365059
+Epoch: 11000; Computation time: 3781.057611505; Current value of V(0): 5418.00537109375
+Lagrangian objective: -638.7326; Average H(x0): 676.1908; Quantile-hedge α(β): 98.8
+Simulation time per epoch: 0.074164443; Gradient computation time: 0.1818244; Testing time: 0.083305099
+Epoch: 12000; Computation time: 4120.33772546; Current value of V(0): 5468.504333496094
+Lagrangian objective: -602.0704; Average H(x0): 648.63153; Quantile-hedge α(β): 98.38
+Simulation time per epoch: 0.074098569; Gradient computation time: 0.182279843; Testing time: 0.083354478
+Epoch: 13000; Computation time: 4459.61562425; Current value of V(0): 5089.777755737305
+Lagrangian objective: -584.7901; Average H(x0): 615.72516; Quantile-hedge α(β): 98.96000000000001
+Simulation time per epoch: 0.073984883; Gradient computation time: 0.181855465; Testing time: 0.083463369
+Epoch: 14000; Computation time: 4798.852137846; Current value of V(0): 4963.615036010742
+Lagrangian objective: -557.4219; Average H(x0): 585.51746; Quantile-hedge α(β): 99.5
+Simulation time per epoch: 0.074069617; Gradient computation time: 0.182151823; Testing time: 0.083323267
+Epoch: 15000; Computation time: 5138.116344277; Current value of V(0): 4973.737716674805
+Lagrangian objective: -539.4678; Average H(x0): 583.96545; Quantile-hedge α(β): 99.3
+Simulation time per epoch: 0.07407515; Gradient computation time: 0.181752215; Testing time: 0.083347465
+Epoch: 16000; Computation time: 5477.372012588; Current value of V(0): 5456.936264038086
+Lagrangian objective: -610.49567; Average H(x0): 641.4211; Quantile-hedge α(β): 99.0
+Simulation time per epoch: 0.075048789; Gradient computation time: 0.182132906; Testing time: 0.083515722
+Epoch: 17000; Computation time: 5816.682605186; Current value of V(0): 5862.747955322266
+Lagrangian objective: -619.3949; Average H(x0): 660.69226; Quantile-hedge α(β): 98.88
+Simulation time per epoch: 0.074090292; Gradient computation time: 0.181926334; Testing time: 0.083380045
+Epoch: 18000; Computation time: 6155.904825349; Current value of V(0): 6770.102691650391
+Lagrangian objective: -621.0472; Average H(x0): 672.485; Quantile-hedge α(β): 98.61999999999999
+Simulation time per epoch: 0.074034416; Gradient computation time: 0.181286189; Testing time: 0.083317227
+Epoch: 19000; Computation time: 6495.205122224; Current value of V(0): 7587.798309326172
+Lagrangian objective: -626.10565; Average H(x0): 675.6187; Quantile-hedge α(β): 98.58
+Simulation time per epoch: 0.074078998; Gradient computation time: 0.181808702; Testing time: 0.083392828
+-----------------------------------------
+Epoch: 20000; Penalty β updated to: 100000.0
+-----------------------------------------
+Epoch: 20000; Computation time: 6834.47921513; Current value of V(0): 7304.535675048828
+Lagrangian objective: -84.21095; Average H(x0): 635.5142; Quantile-hedge α(β): 98.88
+Simulation time per epoch: 0.073966067; Gradient computation time: 0.18198218; Testing time: 0.083376105
+Epoch: 21000; Computation time: 7173.749135452; Current value of V(0): 6988.154602050781
+Lagrangian objective: -590.98883; Average H(x0): 597.53; Quantile-hedge α(β): 99.86
+Simulation time per epoch: 0.074036409; Gradient computation time: 0.182224276; Testing time: 0.083387432
+Epoch: 22000; Computation time: 7513.084887274; Current value of V(0): 6996.599578857422
+Lagrangian objective: -601.0174; Average H(x0): 606.938; Quantile-hedge α(β): 99.83999999999999
+Simulation time per epoch: 0.074086158; Gradient computation time: 0.181860181; Testing time: 0.083363074
+Epoch: 23000; Computation time: 7852.329356611; Current value of V(0): 6983.687591552734
+Lagrangian objective: -568.32477; Average H(x0): 605.73065; Quantile-hedge α(β): 99.83999999999999
+Simulation time per epoch: 0.073962338; Gradient computation time: 0.181834481; Testing time: 0.083320577
+Epoch: 24000; Computation time: 8191.572816429; Current value of V(0): 7072.161102294922
+Lagrangian objective: -572.9685; Average H(x0): 598.33795; Quantile-hedge α(β): 99.86
+Simulation time per epoch: 0.074100871; Gradient computation time: 0.182007198; Testing time: 0.083358922
+Epoch: 25000; Computation time: 8530.818116184; Current value of V(0): 7144.529724121094
+Lagrangian objective: -568.0367; Average H(x0): 602.0583; Quantile-hedge α(β): 99.86
+Simulation time per epoch: 0.073976787; Gradient computation time: 0.182140085; Testing time: 0.083365659
+Epoch: 26000; Computation time: 8870.064752308; Current value of V(0): 7327.198028564453
+Lagrangian objective: -563.9628; Average H(x0): 610.0904; Quantile-hedge α(β): 99.78
+Simulation time per epoch: 0.07401451; Gradient computation time: 0.181572959; Testing time: 0.083356915
+Epoch: 27000; Computation time: 9209.134337677; Current value of V(0): 7658.689117431641
+Lagrangian objective: -562.8453; Average H(x0): 606.5803; Quantile-hedge α(β): 99.74
+Simulation time per epoch: 0.074075866; Gradient computation time: 0.181934456; Testing time: 0.083321626
+Epoch: 28000; Computation time: 9547.947330706; Current value of V(0): 7770.468902587891
+Lagrangian objective: -589.07; Average H(x0): 604.6931; Quantile-hedge α(β): 99.82
+Simulation time per epoch: 0.074185021; Gradient computation time: 0.181224487; Testing time: 0.083201415
+Epoch: 29000; Computation time: 9886.645307108; Current value of V(0): 7757.122802734375
+Lagrangian objective: -568.5593; Average H(x0): 599.9946; Quantile-hedge α(β): 99.94
+Simulation time per epoch: 0.074178892; Gradient computation time: 0.181094737; Testing time: 0.08317491
+Epoch: 30000; Computation time: 10225.35834415; Current value of V(0): 7660.379791259766
+Lagrangian objective: -553.5036; Average H(x0): 595.2014; Quantile-hedge α(β): 99.82
+Simulation time per epoch: 0.074196994; Gradient computation time: 0.181091543; Testing time: 0.08318777
+Epoch: 31000; Computation time: 10564.089703041; Current value of V(0): 8055.2276611328125
+Lagrangian objective: -624.5525; Average H(x0): 627.6427; Quantile-hedge α(β): 99.9
+Simulation time per epoch: 0.074173347; Gradient computation time: 0.181350215; Testing time: 0.083209556
+Epoch: 32000; Computation time: 10902.839456065; Current value of V(0): 8106.3201904296875
+Lagrangian objective: -577.2015; Average H(x0): 631.8323; Quantile-hedge α(β): 99.8
+Simulation time per epoch: 0.07420032; Gradient computation time: 0.181185973; Testing time: 0.083222495
+Epoch: 33000; Computation time: 11241.630704199; Current value of V(0): 8085.558319091797
+Lagrangian objective: -608.74066; Average H(x0): 631.4588; Quantile-hedge α(β): 99.8
+Simulation time per epoch: 0.074175282; Gradient computation time: 0.181335386; Testing time: 0.083233002
+Epoch: 34000; Computation time: 11580.427842413; Current value of V(0): 8103.788757324219
+Lagrangian objective: -610.9115; Average H(x0): 632.6328; Quantile-hedge α(β): 99.7
+Simulation time per epoch: 0.074145425; Gradient computation time: 0.181352428; Testing time: 0.083262006
+Epoch: 35000; Computation time: 11919.208706973; Current value of V(0): 8089.643859863281
+Lagrangian objective: -607.80585; Average H(x0): 632.3699; Quantile-hedge α(β): 99.83999999999999
+Simulation time per epoch: 0.074235026; Gradient computation time: 0.181238756; Testing time: 0.083202526
+Epoch: 36000; Computation time: 12257.99765126; Current value of V(0): 8078.661346435547
+Lagrangian objective: -568.73145; Average H(x0): 631.3957; Quantile-hedge α(β): 99.82
+Simulation time per epoch: 0.074134504; Gradient computation time: 0.181380029; Testing time: 0.083245018
+Epoch: 37000; Computation time: 12596.755547886; Current value of V(0): 8107.010650634766
+Lagrangian objective: -612.2994; Average H(x0): 631.4158; Quantile-hedge α(β): 99.72
+Simulation time per epoch: 0.074077124; Gradient computation time: 0.181198528; Testing time: 0.083245835
+Epoch: 38000; Computation time: 12935.557171449; Current value of V(0): 8120.8404541015625
+Lagrangian objective: -622.0694; Average H(x0): 632.3337; Quantile-hedge α(β): 99.78
+Simulation time per epoch: 0.074094872; Gradient computation time: 0.181420492; Testing time: 0.083225181
+Epoch: 39000; Computation time: 13274.798002575; Current value of V(0): 8121.430969238281
+Lagrangian objective: -604.32983; Average H(x0): 632.2135; Quantile-hedge α(β): 99.8
+Simulation time per epoch: 0.073902045; Gradient computation time: 0.182372678; Testing time: 0.08354135
+Epoch: 40000; Computation time: 13614.307126378; Current value of V(0): 8132.895660400391
+Lagrangian objective: -609.1835; Average H(x0): 632.991; Quantile-hedge α(β): 99.72
+Simulation time per epoch: 0.073972582; Gradient computation time: 0.18173173; Testing time: 0.083329769
+
+Training completed in 13614.307298846 seconds
+Final V(0): 8132.657623291016
+
+============================================================
+Running policy evaluation...
+============================================================
+
+
+============================================================
+INVENTORY PROBLEM (unscaled, weekly)
+============================================================
+Dimension:       50
+Discount factor: 0.9990389236684376
+Fixed cost:      250.0
+Variable costs:  [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]
+Holding costs:   [0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.019230769230769232, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.038461538461538464, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693, 0.07692307692307693]
+Backlog costs:   [0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.4807692307692308, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231, 1.9230769230769231]
+Demand dists:    DataType[Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}, Distributions.NegativeBinomial{Float64}]
+Demand means:    [0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.9615384615384616, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.4807692307692307, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536, 0.24038461538461536]
+============================================================
+
+==================================================
+Computing order-up-to vector via :solve_inf
+==================================================
+
+Method: solve_inf
+Final objective: 621.8841880806917
+z*: [15.5, 26.336870606800662, 15.5, 15.5, 15.5, 15.5, 16.0, 16.732428193685884, 15.5, 25.979852331235847, 15.5, 16.0, 15.5, 18.401349186627236, 17.836683798766234, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 11.547691665486385, 12.214396247416802, 8.0, 10.063052887672555, 12.9319372215621, 8.0, 8.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.358397745910751, 4.8027582465929575, 4.0, 4.761578944765201, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0]
+Intervention value: -543.0575737008089
+
+==================================================
+Computing order-up-to vector via :find_stationary
+==================================================
+
+Method: find_stationary
+Final residual: 0.056022777650108865
+z*: [31.0, 32.0, 31.0, 31.0, 31.0, 31.0, 32.0, 32.0, 31.0, 32.0, 31.0, 32.0, 31.0, 32.0, 32.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0]
+Intervention value: -552.6782274169922
+
+==================================================
+Summary:
+  solve_inf:       z* = [16, 26, 16, 16, 16, 16, 16, 17, 16, 26, 16, 16, 16, 18, 18, 8, 8, 8, 8, 8, 8, 8, 8, 12, 12, 8, 10, 13, 8, 8, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 5, 4, 4, 4, 4, 4, 4, 4]
+  find_stationary: z* = [31, 32, 31, 31, 31, 31, 32, 32, 31, 32, 31, 32, 31, 32, 32, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+==================================================
+
+============================================================
+Evaluating method: solve_inf
+============================================================
+
+----------------------------------------
+Evaluating ε = -1.25
+----------------------------------------
+Mean cost: 97547.54665482839 ± 892.7492083827703
+  Inventory costs: 23322.28398006133
+  Variable costs:  5017.452739589488
+  Fixed costs:     69207.80993517766
+  Simulation time: 660.0s
+
+----------------------------------------
+Evaluating ε = -2.5
+----------------------------------------
+Mean cost: 91073.61560687781 ± 778.1937530369349
+  Inventory costs: 24245.606364940766
+  Variable costs:  5047.123056125652
+  Fixed costs:     61780.88618581137
+  Simulation time: 663.9s
+
+----------------------------------------
+Evaluating ε = -5.0
+----------------------------------------
+Mean cost: 81681.70640892346 ± 358.1346884487308
+  Inventory costs: 26272.350261397914
+  Variable costs:  5049.95734777374
+  Fixed costs:     50359.39879975185
+  Simulation time: 647.2s
+
+----------------------------------------
+Evaluating ε = -7.5
+----------------------------------------
+Mean cost: 76232.4801865938 ± 269.17163034768413
+  Inventory costs: 28346.114284579515
+  Variable costs:  5039.164668219042
+  Fixed costs:     42847.20123379525
+  Simulation time: 598.9s
+
+----------------------------------------
+Evaluating ε = -10.0
+----------------------------------------
+Mean cost: 73105.85722384923 ± 251.13997441430774
+  Inventory costs: 30224.765939710323
+  Variable costs:  5022.068568956251
+  Fixed costs:     37859.022715182684
+  Simulation time: 595.8s
+
+----------------------------------------
+Evaluating ε = -12.5
+----------------------------------------
+Mean cost: 71086.94554312443 ± 412.8823547599694
+  Inventory costs: 32497.030356849813
+  Variable costs:  5032.918630070402
+  Fixed costs:     33556.996556204125
+  Simulation time: 590.1s
+
+----------------------------------------
+Evaluating ε = -15.0
+----------------------------------------
+Mean cost: 70114.63396356626 ± 307.0672209909311
+  Inventory costs: 34502.83956514853
+  Variable costs:  5049.585454568782
+  Fixed costs:     30562.208943848982
+  Simulation time: 591.1s
+
+----------------------------------------
+Evaluating ε = -20.0
+----------------------------------------
+Mean cost: 69930.5281819388 ± 262.44176755130064
+  Inventory costs: 39273.16657475829
+  Variable costs:  5039.881369755261
+  Fixed costs:     25617.480237425298
+  Simulation time: 593.0s
+
+----------------------------------------
+Evaluating ε = -25.0
+----------------------------------------
+Mean cost: 70908.95729498177 ± 224.3640307943146
+  Inventory costs: 43266.12425450793
+  Variable costs:  5026.539055672266
+  Fixed costs:     22616.293984801516
+  Simulation time: 597.5s
+
+----------------------------------------
+Evaluating ε = -30.0
+----------------------------------------
+Mean cost: 72956.50589960659 ± 279.5587261367893
+  Inventory costs: 47725.91987962528
+  Variable costs:  5018.483693652397
+  Fixed costs:     20212.10232632901
+  Simulation time: 599.5s
+
+----------------------------------------
+Evaluating ε = -40.0
+----------------------------------------
+Mean cost: 78237.14835405094 ± 343.1111304870818
+  Inventory costs: 56219.93409244287
+  Variable costs:  4987.3475169852145
+  Fixed costs:     17029.86674462287
+  Simulation time: 585.9s
+
+----------------------------------------
+Evaluating ε = -50.0
+----------------------------------------
+Mean cost: 84604.89400048534 ± 293.3939849962206
+  Inventory costs: 64528.838089513614
+  Variable costs:  4994.657076040303
+  Fixed costs:     15081.398834931248
+  Simulation time: 582.5s
+
+----------------------------------------
+Evaluating ε = -75.0
+----------------------------------------
+Mean cost: 100609.92736913233 ± 191.275800711556
+  Inventory costs: 83414.36809322056
+  Variable costs:  5004.816827832069
+  Fixed costs:     12190.742448079749
+  Simulation time: 590.0s
+
+----------------------------------------
+Evaluating ε = -100.0
+----------------------------------------
+Mean cost: 117756.43898849476 ± 291.2810766123517
+  Inventory costs: 102239.26406603135
+  Variable costs:  4975.62627924102
+  Fixed costs:     10541.548643222435
+  Simulation time: 594.6s
+
+==================================================
+Best epsilon: -20.0 with cost: 69930.5281819388 ± 262.44176755130064
+==================================================
+
+============================================================
+Evaluating method: find_stationary
+============================================================
+
+----------------------------------------
+Evaluating ε = -1.25
+----------------------------------------
+Mean cost: 55522.97430310119 ± 229.58642003359853
+  Inventory costs: 32602.06108093299
+  Variable costs:  5069.091278688767
+  Fixed costs:     17851.821943479474
+  Simulation time: 591.2s
+
+----------------------------------------
+Evaluating ε = -2.5
+----------------------------------------
+Mean cost: 55091.02083278944 ± 143.63781456681028
+  Inventory costs: 33223.92514480013
+  Variable costs:  5101.072153217664
+  Fixed costs:     16766.0235347716
+  Simulation time: 590.8s
+
+----------------------------------------
+Evaluating ε = -5.0
+----------------------------------------
+Mean cost: 55777.738924741934 ± 222.07663682405288
+  Inventory costs: 34869.419959774576
+  Variable costs:  5065.991538141379
+  Fixed costs:     15842.327426826028
+  Simulation time: 586.1s
+
+----------------------------------------
+Evaluating ε = -7.5
+----------------------------------------
+Mean cost: 56714.93747187774 ± 182.62030516380423
+  Inventory costs: 36765.81186711525
+  Variable costs:  5079.814905221198
+  Fixed costs:     14869.310699541262
+  Simulation time: 594.2s
+
+----------------------------------------
+Evaluating ε = -10.0
+----------------------------------------
+Mean cost: 56697.07428371131 ± 173.09098165088213
+  Inventory costs: 37846.87161322623
+  Variable costs:  5041.241054948099
+  Fixed costs:     13808.961615536984
+  Simulation time: 592.2s
+
+----------------------------------------
+Evaluating ε = -12.5
+----------------------------------------
+Mean cost: 57789.234514415046 ± 167.46030532253576
+  Inventory costs: 39467.17507937239
+  Variable costs:  5074.755265744582
+  Fixed costs:     13247.304169298059
+  Simulation time: 598.0s
+
+----------------------------------------
+Evaluating ε = -15.0
+----------------------------------------
+Mean cost: 58726.57475357002 ± 224.46656135516366
+  Inventory costs: 40951.44631886075
+  Variable costs:  5063.21589571399
+  Fixed costs:     12711.91253899524
+  Simulation time: 562.2s
+
+----------------------------------------
+Evaluating ε = -20.0
+----------------------------------------
+Mean cost: 60814.05740841953 ± 192.4154349184904
+  Inventory costs: 43926.96284100598
+  Variable costs:  5061.401988387395
+  Fixed costs:     11825.692579026192
+  Simulation time: 545.9s
+
+----------------------------------------
+Evaluating ε = -25.0
+----------------------------------------
+Mean cost: 62861.10877385443 ± 184.10660815423583
+  Inventory costs: 46746.14574310798
+  Variable costs:  5046.1015732233045
+  Fixed costs:     11068.861457523173
+  Simulation time: 548.6s
+
+----------------------------------------
+Evaluating ε = -30.0
+----------------------------------------
+Mean cost: 65961.88213374684 ± 245.03657396908432
+  Inventory costs: 50241.098050382294
+  Variable costs:  5085.743500953487
+  Fixed costs:     10635.040582411088
+  Simulation time: 545.6s
+
+----------------------------------------
+Evaluating ε = -40.0
+----------------------------------------
+Mean cost: 70278.03640039374 ± 411.6900636053152
+  Inventory costs: 55628.46882810772
+  Variable costs:  5044.445538337495
+  Fixed costs:     9605.122033948588
+  Simulation time: 550.3s
+
+----------------------------------------
+Evaluating ε = -50.0
+----------------------------------------
+Mean cost: 75921.39728947496 ± 325.90013985115417
+  Inventory costs: 61854.67779555645
+  Variable costs:  5060.549453422119
+  Fixed costs:     9006.170040496441
+  Simulation time: 550.9s
+
+----------------------------------------
+Evaluating ε = -75.0
+----------------------------------------
+Mean cost: 89660.29974154211 ± 449.8651465435337
+  Inventory costs: 76857.76716806053
+  Variable costs:  5005.44741196283
+  Fixed costs:     7797.08516151866
+  Simulation time: 541.4s
+
+----------------------------------------
+Evaluating ε = -100.0
+----------------------------------------
+Mean cost: 104727.87377137947 ± 499.75086695575703
+  Inventory costs: 92570.4581062566
+  Variable costs:  5041.596525120661
+  Fixed costs:     7115.819140002163
+  Simulation time: 511.1s
+
+==================================================
+Best epsilon: -2.5 with cost: 55091.02083278944 ± 143.63781456681028
+==================================================
+Skipping save for solve_inf: existing cost 55422.53642120921 <= new cost 69930.5281819388
+Improving find_stationary: 55143.10418681558 -> 55091.02083278944
+Results saved to: output/nn_training/results_50D_CaseMH_find_stationary.json
+Neural networks saved to: policies/policies50D/neural_networks_50D_CaseMH_find_stationary.bson
+
+============================================================
+FINAL RESULTS SUMMARY
+============================================================
+
+Method: solve_inf
+  Order-up-to vector: [16, 26, 16, 16, 16, 16, 16, 17, 16, 26, 16, 16, 16, 18, 18, 8, 8, 8, 8, 8, 8, 8, 8, 12, 12, 8, 10, 13, 8, 8, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 4, 5, 4, 4, 4, 4, 4, 4, 4]
+  Best epsilon: -20.0
+  Best cost: 69930.5281819388 ± 262.44176755130064
+
+Method: find_stationary
+  Order-up-to vector: [31, 32, 31, 31, 31, 31, 32, 32, 31, 32, 31, 32, 31, 32, 32, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+  Best epsilon: -2.5
+  Best cost: 55091.02083278944 ± 143.63781456681028
+
+============================================================
+Complete! Per-method results saved to:
+  output/nn_training/results_50D_CaseMH_solve_inf.json
+  output/nn_training/results_50D_CaseMH_find_stationary.json
+============================================================
+
+  Activating project at `~/DeepSJRP`
+[ Info:  started timer at: 2026-04-29T04:28:35.718
+┌ Warning: Layer with Float32 parameters got Float64 input.
+│   The input will be converted, but any earlier layers may be very slow.
+│   layer = Dense(50 => 1000, elu)  # 51_000 parameters
+│   summary(x) = "50-element Vector{Float64}"
+└ @ Flux ~/.julia/packages/Flux/DZYiO/src/layers/stateless.jl:60
+RUNNING THE L-BFGS-B CODE
+
+           * * *
+
+Machine precision = 2.220D-16
+ N =           50     M =           10
+
+At X0         0 variables are exactly at the bounds
+
+At iterate    0    f=  6.31505D+02    |proj g|=  5.53364D-02
+
+At iterate    1    f=  6.31478D+02    |proj g|=  5.53885D-02
+  ys=-2.596E-06  -gs= 2.699E-02 BFGS update SKIPPED
+
+At iterate    2    f=  6.29695D+02    |proj g|=  3.97930D-02
+
+At iterate    3    f=  6.29165D+02    |proj g|=  9.65376D-02
+
+At iterate    4    f=  6.28242D+02    |proj g|=  5.79437D-02
+
+At iterate    5    f=  6.27936D+02    |proj g|=  8.20753D-02
+
+At iterate    6    f=  6.27543D+02    |proj g|=  4.70398D-02
+
+At iterate    7    f=  6.27179D+02    |proj g|=  5.88195D-02
+
+At iterate    8    f=  6.26660D+02    |proj g|=  5.26856D-02
+
+At iterate    9    f=  6.26032D+02    |proj g|=  6.17605D-02
+
+At iterate   10    f=  6.25474D+02    |proj g|=  1.08147D-01
+
+At iterate   11    f=  6.25427D+02    |proj g|=  1.72636D-01
+
+At iterate   12    f=  6.24440D+02    |proj g|=  1.05713D-01
+
+At iterate   13    f=  6.23577D+02    |proj g|=  6.57503D-02
+
+At iterate   14    f=  6.23098D+02    |proj g|=  9.88961D-02
+
+At iterate   15    f=  6.22598D+02    |proj g|=  5.13772D-02
+
+At iterate   16    f=  6.22344D+02    |proj g|=  3.46741D-02
+
+At iterate   17    f=  6.22082D+02    |proj g|=  3.95092D-02
+
+At iterate   18    f=  6.21971D+02    |proj g|=  2.74415D-02
+
+At iterate   19    f=  6.21942D+02    |proj g|=  2.13184D-02
+
+At iterate   20    f=  6.21913D+02    |proj g|=  1.67614D-02
+
+At iterate   21    f=  6.21903D+02    |proj g|=  1.45414D-02
+
+At iterate   22    f=  6.21884D+02    |proj g|=  7.57034D-03
+
+           * * *
+
+Tit   = total number of iterations
+Tnf   = total number of function evaluations
+Tnint = total number of segments explored during Cauchy searches
+Skip  = number of BFGS updates skipped
+Nact  = number of active bounds at final generalized Cauchy point
+Projg = norm of the final projected gradient
+F     = final function value
+
+           * * *
+
+   N    Tit     Tnf  Tnint  Skip  Nact     Projg        F
+   50     22     27     48     1    37   7.570D-03   6.219D+02
+  F =   621.88418808069173     
+
+CONVERGENCE: NORM_OF_PROJECTED_GRADIENT_<=_PGTOL            
+
+ Cauchy                time 0.000E+00 seconds.
+ Subspace minimization time 0.000E+00 seconds.
+ Line search           time 4.297E-02 seconds.
+
+ Total User time 3.112E+00 seconds.
+
+RUNNING THE L-BFGS-B CODE
+
+           * * *
+
+Machine precision = 2.220D-16
+ N =           50     M =           10
+
+At X0         0 variables are exactly at the bounds
+
+At iterate    0    f=  3.13855D-03    |proj g|=  5.09768D-06
+
+           * * *
+
+Tit   = total number of iterations
+Tnf   = total number of function evaluations
+Tnint = total number of segments explored during Cauchy searches
+Skip  = number of BFGS updates skipped
+Nact  = number of active bounds at final generalized Cauchy point
+Projg = norm of the final projected gradient
+F     = final function value
+
+           * * *
+
+   N    Tit     Tnf  Tnint  Skip  Nact     Projg        F
+   50      0      1      0     0     0   5.098D-06   3.139D-03
+  F =   3.1385516156335370E-003
+
+CONVERGENCE: NORM_OF_PROJECTED_GRADIENT_<=_PGTOL            
+
+ Cauchy                time 0.000E+00 seconds.
+ Subspace minimization time 0.000E+00 seconds.
+ Line search           time 0.000E+00 seconds.
+
+ Total User time 3.613E-01 seconds.
+
