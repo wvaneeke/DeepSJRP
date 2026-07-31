@@ -32,7 +32,7 @@ DeepSJRP/
 ├── run_training.jl            # CLI: train NN for one instance
 ├── run_simulations.jl         # CLI: benchmark search & final simulations
 ├── run_mpdsolver2d.jl         # CLI: exact MDP optimal policy (2D only)
-├── plotz.jl                   # Run .jl file to reproduce 2d policy plots per instance
+├── plotz.jl                   # Run to reproduce 2d policy plots per instance
 ├── Project.toml               # Julia package dependencies
 └── Manifest.toml              # pinned dependency versions
 ```
